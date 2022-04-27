@@ -4,19 +4,34 @@ include(ROOT."app/_config/autoload.php");
 
 class Products extends Connection{
 
+    
+
     public function Products(){
         
         parent::__construct();
        
     }
-    public function get_productos(){
 
-        $sql = "SELECT * FROM USA_products_shopify where sku='100672ZM'";
-        $sentencia=$this->connection_db->prepare($sql);
-        $sentencia->execute(array());
-        $resultado=$sentencia->fetchAll(PDO::FETCH_ASSOC);
-        $sentencia->closeCursor();
-        return $resultado;
+    public function get_product($sku){
+
+        $sql = "SELECT * FROM USA_products_shopify where sku='".$sku."'";
+        $stmt=$this->connection_db->prepare($sql);
+        $stmt->execute(array());
+        $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $result;
+        $this->connection_db=null;
+        
+    }
+
+    public function get_all_products(){
+
+        $sql = "SELECT * FROM USA_products_shopify";
+        $stmt=$this->connection_db->prepare($sql);
+        $stmt->execute(array());
+        $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $result;
         $this->connection_db=null;
         
     }
@@ -32,6 +47,8 @@ class Products extends Connection{
 
 }
 $products= new Products;
-$resultado=$products->get_productos();
-var_dump($resultado);
+$result=$products->get_all_products();
 
+echo "<pre>";
+var_dump($result);
+echo "<pre>";
